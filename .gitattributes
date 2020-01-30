@@ -1,0 +1,4 @@
+chapter15/demo/data/huizong.csv filter=lfs diff=lfs merge=lfs -text
+chapter12/demo/data/7law.zip filter=lfs diff=lfs merge=lfs -text
+《Python数据分析与挖掘实战》勘误表 filter=lfs diff=lfs merge=lfs -text
+V2.9.xls filter=lfs diff=lfs merge=lfs -text
