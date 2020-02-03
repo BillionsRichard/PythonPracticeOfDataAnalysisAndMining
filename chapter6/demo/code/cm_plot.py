@@ -1,17 +1,64 @@
-def cm_plot(y, yp):
-  
-  from sklearn.metrics import confusion_matrix #µ¼Èë»ìÏı¾ØÕóº¯Êı
+# -*- coding: utf-8 -*-
+# çœŸå®ä½ç½®ï¼šsklearn.metrics._classification.confusion_matrix
+# å—ä¿æŠ¤æˆå‘˜å‡½æ•°
+# å¯¼å…¥æ··æ·†çŸ©é˜µå‡½æ•°
+import matplotlib.pyplot as plt  # å¯¼å…¥ä½œå›¾åº“
+# from sklearn.metrics import confusion_matrix # pycharm æ— æ³•è¯†åˆ«ï¼Œä½†æ˜¯å¯ä»¥è¿è¡Œã€‚
+# å®é™…ä½ç½®å¦‚ä¸‹
+from sklearn.metrics._classification import confusion_matrix
 
-  cm = confusion_matrix(y, yp) #»ìÏı¾ØÕó
-  
-  import matplotlib.pyplot as plt #µ¼Èë×÷Í¼¿â
-  plt.matshow(cm, cmap=plt.cm.Greens) #»­»ìÏı¾ØÕóÍ¼£¬ÅäÉ«·ç¸ñÊ¹ÓÃcm.Greens£¬¸ü¶à·ç¸ñÇë²Î¿¼¹ÙÍø¡£
-  plt.colorbar() #ÑÕÉ«±êÇ©
-  
-  for x in range(len(cm)): #Êı¾İ±êÇ©
-    for y in range(len(cm)):
-      plt.annotate(cm[x,y], xy=(x, y), horizontalalignment='center', verticalalignment='center')
-  
-  plt.ylabel('True label') #×ø±êÖá±êÇ©
-  plt.xlabel('Predicted label') #×ø±êÖá±êÇ©
-  return plt
+
+def cm_plot(y, yp):
+    # print('y', y)
+    # print("yp", yp)
+    """
+        By definition a confusion matrix :math:`C` is such that :math:`C_{i, j}`
+    is equal to the number of observations known to be in group :math:`i` and
+    predicted to be in group :math:`j`.
+
+    Thus in binary classification, the count of true negatives is
+    :math:`C_{0,0}`, false negatives is :math:`C_{1,0}`, true positives is
+    :math:`C_{1,1}` and false positives is :math:`C_{0,1}`.
+    
+    |-------------------> predicted label
+    |C[0][0]  C[0][1]
+    |
+    |C[1][0]  C[1][1]
+    |
+    |
+   \|/
+   
+    true Label
+     
+    """
+    cm = confusion_matrix(y, yp)  # æ··æ·†çŸ©é˜µ
+    print(cm, type(cm), cm.T)
+
+    # ç”»æ··æ·†çŸ©é˜µå›¾ï¼Œé…è‰²é£æ ¼ä½¿ç”¨cm.Greensï¼Œæ›´å¤šé£æ ¼è¯·å‚è€ƒå®˜ç½‘ã€‚
+    """
+    The origin is set at the upper left hand corner and rows (first
+    dimension of the array) are displayed horizontally.  The aspect
+    ...
+    """
+    display_cm = cm.T
+    plt.matshow(display_cm, cmap=plt.cm.Greens)
+    plt.colorbar()  # é¢œè‰²æ ‡ç­¾
+
+    for x in range(len(display_cm)):  # æ•°æ®æ ‡ç­¾
+        for y in range(len(display_cm)):
+            plt.annotate(
+                display_cm[x, y],
+                xy=(x, y),
+                horizontalalignment="center",
+                verticalalignment="center",
+            )
+
+    plt.xlabel("Predicted label")  # åæ ‡è½´æ ‡ç­¾
+    plt.ylabel("True label")  # åæ ‡è½´æ ‡ç­¾
+    return plt
+
+
+if __name__ == '__main__':
+    y_true = [1, 0, 1, 0, 1, 1, 1, 0, 1, 1]
+    y_pred = [0, 0, 1, 1, 1, 0, 0, 1, 1, 1]
+    cm_plot(y_true, y_pred).show()
