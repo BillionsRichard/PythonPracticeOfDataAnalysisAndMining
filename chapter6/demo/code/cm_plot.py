@@ -32,7 +32,7 @@ def cm_plot(y, yp):
      
     """
     cm = confusion_matrix(y, yp)  # 混淆矩阵
-    print(cm, type(cm), cm.T)
+    #print(cm, type(cm), cm.T)
 
     # 画混淆矩阵图，配色风格使用cm.Greens，更多风格请参考官网。
     """
