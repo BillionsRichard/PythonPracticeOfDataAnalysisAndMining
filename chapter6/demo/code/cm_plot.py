@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt  # 导入作图库
 from sklearn.metrics._classification import confusion_matrix
 
 
-def cm_plot(y, yp):
+def cm_plot(y, yp, title):
     # print('y', y)
     # print("yp", yp)
     """
@@ -54,11 +54,12 @@ def cm_plot(y, yp):
             )
 
     plt.xlabel("Predicted label")  # 坐标轴标签
-    plt.ylabel("True label")  # 坐标轴标签
+    plt.ylabel("Actual label")  # 坐标轴标签
+    plt.title(title)
     return plt
 
 
 if __name__ == '__main__':
     y_true = [1, 0, 1, 0, 1, 1, 1, 0, 1, 1]
     y_pred = [0, 0, 1, 1, 1, 0, 0, 1, 1, 1]
-    cm_plot(y_true, y_pred).show()
+    cm_plot(y_true, y_pred, 'Test Confusion Matrix').show()

@@ -17,7 +17,7 @@ shuffle(data)
 
 p = 0.8  # 设置训练数据比例
 train = data[: int(len(data) * p), :]
-test = data[int(len(data) * p):, :]
+test = data[int(len(data) * p) :, :]
 
 # 构建LM神经网络模型
 
@@ -30,10 +30,11 @@ net.add(Dense(input_dim=10, output_dim=1))  # 添加隐藏层（10节点）到�
 net.add(Activation("sigmoid"))  # 输出层使用sigmoid激活函数
 net.compile(
     # loss="binary_crossentropy", optimizer="adam", class_mode="binary"
-    loss="binary_crossentropy", optimizer="adam",
+    loss="binary_crossentropy",
+    optimizer="adam",
 )  # 编译模型，使用adam方法求解
 
-net.fit(train[:, :3], train[:, 3], nb_epoch=1000, batch_size=100)  #
+net.fit(train[:, :3], train[:, 3], nb_epoch=1000, batch_size=1)  #
 # 训练模型，循环1000次
 net.save_weights(netfile)  # 保存模型
 
@@ -43,13 +44,15 @@ predict_result = net.predict_classes(train[:, :3]).reshape(
 """这里要提醒的是，keras用predict给出预测概率，predict_classes才是给出预测类别，
 而且两者的预测结果都是n x 1维数组，而不是通常的 1 x n"""
 
+# 绘制混淆矩阵时，第二个参数 使用预测的类别（非概率）
+cm_plot(train[:, 3], predict_result, "CM of LM").show()  # 显示混淆矩阵可视化结果
 
-cm_plot(train[:, 3], predict_result).show()  # 显示混淆矩阵可视化结果
-
-
-predict_result = net.predict(test[:, :3]).reshape(len(test))
+# 绘制 ROC 曲线时，使用预测概率
+predict_result = net.predict_proba(test[:, :3]).reshape(len(test))
 fpr, tpr, thresholds = roc_curve(test[:, 3], predict_result, pos_label=1)
+
 plt.plot(fpr, tpr, linewidth=2, label="ROC of LM")  # 作出ROC曲线
+
 plt.xlabel("False Positive Rate")  # 坐标轴标签
 plt.ylabel("True Positive Rate")  # 坐标轴标签
 plt.ylim(0, 1.05)  # 边界范围
